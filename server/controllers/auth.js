@@ -1,5 +1,6 @@
 //jshint esversion:6
 
+const Sequelize = require("sequelize");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
@@ -31,4 +32,33 @@ exports.login = (req, res) => {
       });
     }
   });
+};
+
+exports.register = (req, res) => {
+  const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync(req.body.password, salt);
+
+  User.create({
+    username: req.body.username,
+    password: hash,
+    email: req.body.email
+  })
+    .then(user => {
+      if (user) {
+        const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY);
+
+        res.send({
+          id: user.id,
+          token
+        });
+      }
+    })
+    .catch(Sequelize.ValidationError, err => {
+      return res.status(406).send(err.message);
+    })
+    .catch(err => {
+      return res.status(400).send({
+        message: err.message
+      });
+    });
 };
