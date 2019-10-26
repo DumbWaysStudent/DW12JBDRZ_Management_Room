@@ -3,20 +3,20 @@
 const models = require("../models");
 
 const Room = models.room;
-
-const getRooms = data => {
-  const newData = data.map(item => {
-    let newItem = {
-      id: item.id,
-      name: item.name
-    };
-    return newItem;
-  });
-  return newData;
-};
+const Customer = models.customer;
 
 exports.showRooms = (req, res) => {
-  Room.findAll({}).then(data => {
-    res.send(getRooms(data));
+  Room.findAll({
+    attributes: { exclude: ["createdAt", "updatedAt"] }
+  }).then(data => {
+    res.send(data);
+  });
+};
+
+exports.showCustomers = (req, res) => {
+  Customer.findAll({
+    attributes: { exclude: ["createdAt", "updatedAt"] }
+  }).then(data => {
+    res.send(data);
   });
 };
