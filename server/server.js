@@ -13,6 +13,7 @@ app.use(bodyParser.json());
 
 const authController = require("./controllers/auth");
 const getController = require("./controllers/get");
+const postController = require("./controllers/post");
 
 const { authenticated, authorized } = require("./middleware");
 
@@ -25,6 +26,13 @@ app.group("/api/v2", router => {
     authenticated,
     authorized,
     getController.showRooms
+  );
+
+  router.post(
+    "/user/:user_id/room",
+    authenticated,
+    authorized,
+    postController.storeRoom
   );
 });
 
