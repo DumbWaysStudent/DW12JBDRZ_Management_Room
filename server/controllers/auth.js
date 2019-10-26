@@ -28,7 +28,7 @@ exports.login = (req, res) => {
       }
     } else {
       res.status(401).send({
-        message: `Unregistered email`
+        message: `Unregistered username`
       });
     }
   });
