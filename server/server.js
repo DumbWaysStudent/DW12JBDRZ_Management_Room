@@ -14,6 +14,7 @@ app.use(bodyParser.json());
 const authController = require("./controllers/auth");
 const getController = require("./controllers/get");
 const postController = require("./controllers/post");
+const putController = require("./controllers/put");
 
 const { authenticated, authorized } = require("./middleware");
 
@@ -33,6 +34,13 @@ app.group("/api/v2", router => {
     authenticated,
     authorized,
     postController.storeRoom
+  );
+
+  router.put(
+    "/user/:user_id/room/:room_id",
+    authenticated,
+    authorized,
+    putController.updateRoom
   );
 });
 
