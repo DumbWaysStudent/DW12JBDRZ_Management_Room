@@ -53,6 +53,12 @@ app.group("/api/v2", router => {
     authorized,
     postController.storeCustomer
   );
+  router.post(
+    "/user/:user_id/checkin",
+    authenticated,
+    authorized,
+    postController.storeCheckin
+  );
 
   router.put(
     "/user/:user_id/room/:room_id",

@@ -4,6 +4,7 @@ const models = require("../models");
 
 const Room = models.room;
 const Customer = models.customer;
+const Order = models.order;
 
 const getRoom = data => {
   const newData = {
@@ -42,5 +43,42 @@ exports.storeCustomer = (req, res) => {
     image
   }).then(data => {
     res.send(getCustomer(data));
+  });
+};
+
+const getCheckin = data => {
+  const newData = {
+    id: data.id,
+    customer_id: data.customer_id,
+    room_id: data.room_id,
+    is_booked: data.is_booked,
+    is_done: data.is_done,
+    duration: data.duration,
+    order_end_time: data.order_end_time
+  };
+  return newData;
+};
+
+exports.storeCheckin = (req, res) => {
+  const {
+    customer_id,
+    room_id,
+    is_booked,
+    is_done,
+    duration,
+    order_end_time
+  } = req.body;
+
+  const time = new Date(order_end_time);
+
+  Order.create({
+    customer_id,
+    room_id,
+    is_booked,
+    is_done,
+    duration,
+    order_end_time: time
+  }).then(data => {
+    res.send(getCheckin(data));
   });
 };
