@@ -3,6 +3,12 @@ module.exports = (sequelize, DataTypes) => {
   const Order = sequelize.define(
     "order",
     {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: DataTypes.INTEGER
+      },
       customer_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -48,6 +54,15 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
-  Order.associate = function(models) {};
+  Order.associate = function(models) {
+    Order.belongsTo(models.customer, {
+      foreignKey: "customer_id",
+      sourceKey: "id"
+    });
+    Order.belongsTo(models.room, {
+      foreignKey: "room_id",
+      sourceKey: "id"
+    });
+  };
   return Order;
 };

@@ -22,6 +22,40 @@ exports.showCustomers = (req, res) => {
   });
 };
 
+const getCheckin = data => {
+  const newData = data.map(item => {
+    const customer = item.customers.map(entry => {
+      const newCustomer = {
+        id: entry.id,
+        name: entry.name,
+        identity_number: entry.identity_number,
+        phone_number: entry.phone_number,
+        image: entry.image
+      };
+      return newCustomer;
+    });
+    const order = item.customers.map(entry => {
+      const { id, is_booked, is_done, duration, order_end_time } = entry.orders;
+      const newOrder = {
+        id,
+        is_booked,
+        is_done,
+        duration,
+        order_end_time
+      };
+      return newOrder;
+    });
+    const newItem = {
+      id: item.id,
+      name: item.name,
+      customer: customer[0],
+      order: order[0]
+    };
+    return newItem;
+  });
+  return newData;
+};
+
 exports.showCheckin = (req, res) => {
   Room.findAll({
     include: [
@@ -31,6 +65,7 @@ exports.showCheckin = (req, res) => {
         attributes: { exclude: ["createdAt", "updatedAt"] },
         through: {
           model: Order,
+          as: "orders",
           where: { is_done: false },
           attributes: { exclude: ["createdAt", "updatedAt"] }
         }
@@ -38,6 +73,6 @@ exports.showCheckin = (req, res) => {
     ],
     attributes: { exclude: ["createdAt", "updatedAt"] }
   }).then(data => {
-    res.send(data);
+    res.send(getCheckin(data));
   });
 };

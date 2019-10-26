@@ -71,14 +71,24 @@ exports.storeCheckin = (req, res) => {
 
   const time = new Date(order_end_time);
 
-  Order.create({
-    customer_id,
-    room_id,
-    is_booked,
-    is_done,
-    duration,
-    order_end_time: time
-  }).then(data => {
-    res.send(getCheckin(data));
+  Order.findOne({
+    where: { room_id, is_booked, is_done }
+  }).then(item => {
+    if (item) {
+      res
+        .status(400)
+        .json({ message: "Room already booked by another customer" });
+    } else {
+      Order.create({
+        customer_id,
+        room_id,
+        is_booked,
+        is_done,
+        duration,
+        order_end_time: time
+      }).then(data => {
+        res.send(getCheckin(data));
+      });
+    }
   });
 };

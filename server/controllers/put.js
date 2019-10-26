@@ -77,24 +77,42 @@ exports.updateCheckout = (req, res) => {
 
   const time = new Date(order_end_time);
 
-  Order.update(
-    {
+  Order.findOne({
+    where: {
+      id: order_id,
       customer_id,
       room_id,
-      is_booked,
-      is_done,
-      duration,
-      order_end_time: time
-    },
-    {
-      where: { id: order_id }
+      is_booked: true,
+      is_done: false
     }
-  ).then(() => {
-    Order.findOne({
-      where: { id: order_id },
-      attributes: { exclude: ["createdAt", "updatedAt"] }
-    }).then(data => {
-      res.send(getCheckout(data));
-    });
+  }).then(item => {
+    if (item) {
+      Order.update(
+        {
+          customer_id,
+          room_id,
+          is_booked,
+          is_done,
+          duration,
+          order_end_time: time
+        },
+        {
+          where: { id: order_id }
+        }
+      ).then(() => {
+        Order.findOne({
+          where: { id: order_id },
+          attributes: { exclude: ["createdAt", "updatedAt"] }
+        }).then(data => {
+          res.send(getCheckout(data));
+        });
+      });
+    } else {
+      res
+        .status(400)
+        .json({
+          message: "This customer never book this room. The Room is available"
+        });
+    }
   });
 };
