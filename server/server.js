@@ -54,6 +54,12 @@ app.group("/api/v2", router => {
     authorized,
     putController.updateRoom
   );
+  router.put(
+    "/user/:user_id/customer/:customer_id",
+    authenticated,
+    authorized,
+    putController.updateCustomer
+  );
 });
 
 app.use((err, req, res, next) => {
