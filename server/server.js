@@ -41,6 +41,12 @@ app.group("/api/v2", router => {
     authorized,
     postController.storeRoom
   );
+  router.post(
+    "/user/:user_id/customer",
+    authenticated,
+    authorized,
+    postController.storeCustomer
+  );
 
   router.put(
     "/user/:user_id/room/:room_id",
