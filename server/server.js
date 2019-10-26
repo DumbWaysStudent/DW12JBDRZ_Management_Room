@@ -34,6 +34,12 @@ app.group("/api/v2", router => {
     authorized,
     getController.showCustomers
   );
+  router.get(
+    "/user/:user_id/checkin",
+    authenticated,
+    authorized,
+    getController.showCheckin
+  );
 
   router.post(
     "/user/:user_id/room",
