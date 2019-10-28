@@ -64,7 +64,7 @@ const getCheckin = data => {
       return newCustomer;
     });
     const order = item.customers.map(entry => {
-      const { id, is_booked, is_done, duration, order_end_time } = entry.orders;
+      const { id, is_booked, is_done, duration, order_end_time } = entry.order;
       const newOrder = {
         id,
         is_booked,
@@ -86,28 +86,24 @@ const getCheckin = data => {
 };
 
 exports.storeCheckin = (req, res) => {
-  const {
-    customer_id,
-    room_id,
-    is_booked,
-    is_done,
-    duration,
-    order_end_time
-  } = req.body;
+  const { customer_id, room_id, duration } = req.body;
 
   Order.findOne({
-    where: { room_id, is_booked, is_done }
+    where: { room_id, is_booked: true, is_done: false }
   }).then(item => {
     if (item) {
       res.status(400).json({ message: "Room already booked" });
     } else {
+      const time = new Date();
+      time.setMinutes(time.getMinutes() + duration);
+
       Order.create({
         customer_id,
         room_id,
-        is_booked,
-        is_done,
+        is_booked: true,
+        is_done: false,
         duration,
-        order_end_time
+        order_end_time: time
       }).then(data => {
         if (data) {
           Room.findAll({
@@ -118,7 +114,6 @@ exports.storeCheckin = (req, res) => {
                 attributes: { exclude: ["createdAt", "updatedAt"] },
                 through: {
                   model: Order,
-                  as: "orders",
                   where: { is_done: false },
                   attributes: { exclude: ["createdAt", "updatedAt"] }
                 }
