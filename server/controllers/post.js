@@ -18,19 +18,16 @@ exports.storeRoom = (req, res) => {
   const { name } = req.body;
 
   Room.create({ name }).then(data => {
-    res.send(getRoom(data));
+    if (data) {
+      Room.findAll({
+        attributes: { exclude: ["createdAt", "updatedAt"] }
+      }).then(item => {
+        res.send(item);
+      });
+    } else {
+      res.status(400).json({ message: "No room was added" });
+    }
   });
-};
-
-const getCustomer = data => {
-  const newData = {
-    id: data.id,
-    name: data.name,
-    identity_number: data.identity_number,
-    phone_number: data.phone_number,
-    image: data.image
-  };
-  return newData;
 };
 
 exports.storeCustomer = (req, res) => {
@@ -42,20 +39,49 @@ exports.storeCustomer = (req, res) => {
     phone_number,
     image
   }).then(data => {
-    res.send(getCustomer(data));
+    if (data) {
+      Customer.findAll({
+        attributes: { exclude: ["createdAt", "updatedAt"] }
+      }).then(data => {
+        res.send(data);
+      });
+    } else {
+      res.status(400).json({ message: "No customer was added" });
+    }
   });
 };
 
 const getCheckin = data => {
-  const newData = {
-    id: data.id,
-    customer_id: data.customer_id,
-    room_id: data.room_id,
-    is_booked: data.is_booked,
-    is_done: data.is_done,
-    duration: data.duration,
-    order_end_time: data.order_end_time
-  };
+  const newData = data.map(item => {
+    const customer = item.customers.map(entry => {
+      const newCustomer = {
+        id: entry.id,
+        name: entry.name,
+        identity_number: entry.identity_number,
+        phone_number: entry.phone_number,
+        image: entry.image
+      };
+      return newCustomer;
+    });
+    const order = item.customers.map(entry => {
+      const { id, is_booked, is_done, duration, order_end_time } = entry.orders;
+      const newOrder = {
+        id,
+        is_booked,
+        is_done,
+        duration,
+        order_end_time
+      };
+      return newOrder;
+    });
+    const newItem = {
+      id: item.id,
+      name: item.name,
+      customer: customer[0],
+      order: order[0]
+    };
+    return newItem;
+  });
   return newData;
 };
 
@@ -69,15 +95,11 @@ exports.storeCheckin = (req, res) => {
     order_end_time
   } = req.body;
 
-  const time = new Date(order_end_time);
-
   Order.findOne({
     where: { room_id, is_booked, is_done }
   }).then(item => {
     if (item) {
-      res
-        .status(400)
-        .json({ message: "Room already booked by another customer" });
+      res.status(400).json({ message: "Room already booked" });
     } else {
       Order.create({
         customer_id,
@@ -85,9 +107,30 @@ exports.storeCheckin = (req, res) => {
         is_booked,
         is_done,
         duration,
-        order_end_time: time
+        order_end_time
       }).then(data => {
-        res.send(getCheckin(data));
+        if (data) {
+          Room.findAll({
+            include: [
+              {
+                model: Customer,
+                as: "customers",
+                attributes: { exclude: ["createdAt", "updatedAt"] },
+                through: {
+                  model: Order,
+                  as: "orders",
+                  where: { is_done: false },
+                  attributes: { exclude: ["createdAt", "updatedAt"] }
+                }
+              }
+            ],
+            attributes: { exclude: ["createdAt", "updatedAt"] }
+          }).then(data => {
+            res.send(getCheckin(data));
+          });
+        } else {
+          res.status(400).json({ message: "No checkin was added" });
+        }
       });
     }
   });

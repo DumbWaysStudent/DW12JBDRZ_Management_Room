@@ -17,13 +17,16 @@ exports.updateRoom = (req, res) => {
     {
       where: { id: room_id }
     }
-  ).then(() => {
-    Room.findOne({
-      where: { id: room_id },
-      attributes: { exclude: ["createdAt", "updatedAt"] }
-    }).then(data => {
-      res.send(data);
-    });
+  ).then(data => {
+    if (data) {
+      Room.findAll({
+        attributes: { exclude: ["createdAt", "updatedAt"] }
+      }).then(item => {
+        res.send(item);
+      });
+    } else {
+      res.status(400).json({ message: "No room was edited" });
+    }
   });
 };
 
@@ -41,13 +44,16 @@ exports.updateCustomer = (req, res) => {
     {
       where: { id: customer_id }
     }
-  ).then(() => {
-    Customer.findOne({
-      where: { id: customer_id },
-      attributes: { exclude: ["createdAt", "updatedAt"] }
-    }).then(data => {
-      res.send(data);
-    });
+  ).then(data => {
+    if (data) {
+      Customer.findAll({
+        attributes: { exclude: ["createdAt", "updatedAt"] }
+      }).then(item => {
+        res.send(item);
+      });
+    } else {
+      res.status(400).json({ message: "No customer was edited" });
+    }
   });
 };
 
@@ -108,11 +114,9 @@ exports.updateCheckout = (req, res) => {
         });
       });
     } else {
-      res
-        .status(400)
-        .json({
-          message: "This customer never book this room. The Room is available"
-        });
+      res.status(400).json({
+        message: "No one book this room."
+      });
     }
   });
 };
