@@ -25,17 +25,18 @@ exports.showCustomers = (req, res) => {
 const getCheckin = data => {
   const newData = data.map(item => {
     const customer = item.customers.map(entry => {
+	  const {id, name, identity_number, phone_number, image} = entry
       const newCustomer = {
-        id: entry.id,
-        name: entry.name,
-        identity_number: entry.identity_number,
-        phone_number: entry.phone_number,
-        image: entry.image
+        id,
+        name,
+        identity_number,
+        phone_number,
+        image,
       };
       return newCustomer;
     });
     const order = item.customers.map(entry => {
-      const { id, is_booked, is_done, duration, order_end_time } = entry.orders;
+      const { id, is_booked, is_done, duration, order_end_time } = entry.order;
       const newOrder = {
         id,
         is_booked,
@@ -65,7 +66,6 @@ exports.showCheckin = (req, res) => {
         attributes: { exclude: ["createdAt", "updatedAt"] },
         through: {
           model: Order,
-          as: "orders",
           where: { is_done: false },
           attributes: { exclude: ["createdAt", "updatedAt"] }
         }
