@@ -25,13 +25,13 @@ exports.showCustomers = (req, res) => {
 const getCheckin = data => {
   const newData = data.map(item => {
     const customer = item.customers.map(entry => {
-	  const {id, name, identity_number, phone_number, image} = entry
+      const { id, name, identity_number, phone_number, image } = entry;
       const newCustomer = {
         id,
         name,
         identity_number,
         phone_number,
-        image,
+        image
       };
       return newCustomer;
     });
