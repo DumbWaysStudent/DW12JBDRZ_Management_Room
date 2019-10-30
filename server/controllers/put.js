@@ -58,65 +58,71 @@ exports.updateCustomer = (req, res) => {
 };
 
 const getCheckout = data => {
-  const newData = {
-    id: data.id,
-    customer_id: data.customer_id,
-    room_id: data.room_id,
-    is_booked: data.is_booked,
-    is_done: data.is_done,
-    duration: data.duration,
-    order_end_time: data.order_end_time
-  };
+  const newData = data.map(item => {
+    const customer = item.customers.map(entry => {
+      const newCustomer = {
+        id: entry.id,
+        name: entry.name,
+        identity_number: entry.identity_number,
+        phone_number: entry.phone_number,
+        image: entry.image
+      };
+      return newCustomer;
+    });
+    const order = item.customers.map(entry => {
+      const { id, is_booked, is_done, duration, order_end_time } = entry.order;
+      const newOrder = {
+        id,
+        is_booked,
+        is_done,
+        duration,
+        order_end_time
+      };
+      return newOrder;
+    });
+    const newItem = {
+      id: item.id,
+      name: item.name,
+      customer: customer[0],
+      order: order[0]
+    };
+    return newItem;
+  });
   return newData;
 };
 
 exports.updateCheckout = (req, res) => {
   const { order_id } = req.params;
-  const {
-    customer_id,
-    room_id,
-    is_booked,
-    is_done,
-    duration,
-    order_end_time
-  } = req.body;
 
-  const time = new Date(order_end_time);
-
-  Order.findOne({
-    where: {
-      id: order_id,
-      customer_id,
-      room_id,
-      is_booked: true,
-      is_done: false
+  Order.update(
+    {
+      is_booked: false,
+      is_done: true
+    },
+    {
+      where: { id: order_id, is_booked: true, is_done: false }
     }
-  }).then(item => {
-    if (item) {
-      Order.update(
-        {
-          customer_id,
-          room_id,
-          is_booked,
-          is_done,
-          duration,
-          order_end_time: time
-        },
-        {
-          where: { id: order_id }
-        }
-      ).then(() => {
-        Order.findOne({
-          where: { id: order_id },
-          attributes: { exclude: ["createdAt", "updatedAt"] }
-        }).then(data => {
-          res.send(getCheckout(data));
-        });
+  ).then(data => {
+    if (data) {
+      Room.findAll({
+        include: [
+          {
+            model: Customer,
+            as: "customers",
+            attributes: { exclude: ["createdAt", "updatedAt"] },
+            through: {
+              model: Order,
+              where: { is_done: false },
+              attributes: { exclude: ["createdAt", "updatedAt"] }
+            }
+          }
+        ],
+        attributes: { exclude: ["createdAt", "updatedAt"] }
+      }).then(data => {
+        res.send(getCheckout(data));
       });
     } else {
-      res.status(400).json({
-        message: "No one book this room."
-      });
+      res.status(400).json({ message: "No checkout was done" });
     }
   });
 };

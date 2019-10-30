@@ -6,14 +6,6 @@ const Room = models.room;
 const Customer = models.customer;
 const Order = models.order;
 
-const getRoom = data => {
-  const newData = {
-    id: data.id,
-    name: data.name
-  };
-  return newData;
-};
-
 exports.storeRoom = (req, res) => {
   const { name } = req.body;
 
