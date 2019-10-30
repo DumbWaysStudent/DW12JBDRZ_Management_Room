@@ -1,5 +1,11 @@
 import React, {Component} from 'react';
-import {View, Text, SafeAreaView, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  TouchableOpacity,
+  ImageBackground,
+} from 'react-native';
 
 import Button from '../../../components/public/Button';
 import FormTextInput from '../../../components/public/FormTextInput';
@@ -11,6 +17,8 @@ import {API} from '../../../config/api';
 import {storeAuthKey} from '../../../config/auth';
 import {checkSecurePass} from '../../../config/utils';
 import styles from '../styles';
+
+import background from '../../../assets/images/background.jpg';
 
 export default class Login extends Component {
   passwordInputRef = React.createRef();
@@ -81,7 +89,11 @@ export default class Login extends Component {
             this.toggleModal(data.message);
           }
         } else {
-          this.toggleModal(error.message);
+          if (error.code == 'ECONNABORTED') {
+            this.toggleModal(strings.TIMEOUT);
+          } else {
+            this.toggleModal(error.message);
+          }
         }
       });
   };
@@ -105,52 +117,54 @@ export default class Login extends Component {
 
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.formContainer}>
-          <View style={styles.form}>
-            <View style={styles.titleContainer}>
-              <Text style={styles.title}>{strings.WELCOME_TO_LOGIN}</Text>
-              <Text style={styles.title}>{strings.WELCOME_TITLE_APP}</Text>
-            </View>
-            <FormTextInput
-              onChangeText={text => this.handleUnameChange(text)}
-              onSubmitEditing={this.handleUnameSubmitPress}
-              value={this.state.username}
-              placeholder={strings.UNAME_PLACEHOLDER}
-              autoCorrect={false}
-              returnKeyType="next"
-            />
-            <View style={styles.passContainer}>
+        <ImageBackground source={background} style={styles.background}>
+          <View style={styles.formContainer}>
+            <View style={styles.form}>
+              <View style={styles.titleContainer}>
+                <Text style={styles.title}>{strings.WELCOME_TO_LOGIN}</Text>
+                <Text style={styles.title}>{strings.WELCOME_TITLE_APP}</Text>
+              </View>
               <FormTextInput
-                style={styles.password}
-                ref={this.passwordInputRef}
-                placeholder={strings.PASSWORD_PLACEHOLDER}
-                onChangeText={this.handlePasswordChange}
-                value={this.state.password}
-                secureTextEntry={this.state.securePass}
-                returnKeyType="done"
+                onChangeText={text => this.handleUnameChange(text)}
+                onSubmitEditing={this.handleUnameSubmitPress}
+                value={this.state.username}
+                placeholder={strings.UNAME_PLACEHOLDER}
+                autoCorrect={false}
+                returnKeyType="next"
               />
-              <Icon
-                name={this.state.icEye}
-                size={20}
-                color={colors.SILVER}
-                onPress={this.handleChangePwdType}
+              <View style={styles.passContainer}>
+                <FormTextInput
+                  style={styles.password}
+                  ref={this.passwordInputRef}
+                  placeholder={strings.PASSWORD_PLACEHOLDER}
+                  onChangeText={this.handlePasswordChange}
+                  value={this.state.password}
+                  secureTextEntry={this.state.securePass}
+                  returnKeyType="done"
+                />
+                <Icon
+                  name={this.state.icEye}
+                  size={20}
+                  color={colors.SILVER}
+                  onPress={this.handleChangePwdType}
+                />
+              </View>
+              <Button
+                label={strings.LOGIN}
+                isLoading={this.state.isLoading}
+                onPress={this.handleLoginPress}
+                disabled={this.handleDisabledButton(password)}
               />
+              <View style={styles.textContainer}>
+                <Text style={styles.text1}>{strings.SIGNUP1}</Text>
+                <TouchableOpacity onPress={this.handleSignupPress}>
+                  <Text style={styles.text2}>{strings.SIGNUP2}</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-            <Button
-              label={strings.LOGIN}
-              isLoading={this.state.isLoading}
-              onPress={this.handleLoginPress}
-              disabled={this.handleDisabledButton(password)}
-            />
-            <View style={styles.textContainer}>
-              <Text style={styles.text1}>{strings.SIGNUP1}</Text>
-              <TouchableOpacity onPress={this.handleSignupPress}>
-                <Text style={styles.text2}>{strings.SIGNUP2}</Text>
-              </TouchableOpacity>
-            </View>
+            <View style={styles.modalContainer}>{this.showModal()}</View>
           </View>
-          <View style={styles.modalContainer}>{this.showModal()}</View>
-        </View>
+        </ImageBackground>
       </SafeAreaView>
     );
   }

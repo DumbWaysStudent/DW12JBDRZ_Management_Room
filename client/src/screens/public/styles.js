@@ -6,8 +6,13 @@ import strings from '../../config/strings';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  background: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    width: '100%',
+    height: '100%',
   },
   formContainer: {
     width: '85%',
@@ -18,8 +23,9 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   title: {
-    fontFamily: strings.FONT,
+    fontFamily: strings.FONT_BOLD,
     fontSize: 40,
+    color: colors.DARK_GREY,
   },
   passContainer: {
     flexDirection: 'row',
@@ -42,7 +48,7 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     fontFamily: strings.FONT,
-    fontSize: 28,
+    fontSize: 16,
     marginBottom: 12,
   },
   modalMsgContainer: {
@@ -51,7 +57,7 @@ const styles = StyleSheet.create({
   },
   modalMsg: {
     fontFamily: strings.FONT,
-    fontSize: 20,
+    fontSize: 16,
     opacity: 0.3,
   },
   modalTextContainer: {
@@ -62,7 +68,7 @@ const styles = StyleSheet.create({
   modalText: {
     fontFamily: strings.FONT,
     color: colors.BLUE,
-    fontSize: 22,
+    fontSize: 16,
     marginTop: 12,
   },
   textContainer: {
@@ -72,12 +78,12 @@ const styles = StyleSheet.create({
   },
   text1: {
     fontFamily: strings.FONT,
-    fontSize: 18,
+    fontSize: 16,
     opacity: 0.3,
   },
   text2: {
     fontFamily: strings.FONT,
-    fontSize: 18,
+    fontSize: 16,
     color: colors.BLUE,
   },
 });

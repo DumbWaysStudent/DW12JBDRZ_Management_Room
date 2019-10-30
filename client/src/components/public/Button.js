@@ -9,10 +9,7 @@ import strings from '../../config/strings';
 export default class Button extends Component {
   render() {
     const {disabled, label, isLoading, onPress} = this.props;
-    const containerStyle = [
-      styles.container,
-      disabled ? styles.containerDisabled : styles.containerEnabled,
-    ];
+    const buttonStyle = disabled ? styles.btnDisabled : styles.btnEnabled;
     let content;
 
     if (isLoading) {
@@ -27,10 +24,10 @@ export default class Button extends Component {
 
     return (
       <TouchableOpacity
-        style={containerStyle}
+        style={buttonStyle}
         onPress={onPress}
         disabled={disabled}>
-        {content}
+        <View style={styles.container}>{content}</View>
       </TouchableOpacity>
     );
   }
@@ -40,22 +37,24 @@ const styles = StyleSheet.create({
   indicatorCont: {
     flex: 1,
     backgroundColor: colors.GREEN,
-    paddingVertical: 22.5,
+    paddingVertical: 22,
   },
   container: {
     alignItems: 'center',
     backgroundColor: colors.GREEN,
-    paddingVertical: 12,
+    paddingHorizontal: 8,
+    paddingTop: 8,
+    paddingBottom: 12,
   },
-  containerEnabled: {
+  btnEnabled: {
     opacity: 1,
   },
-  containerDisabled: {
+  btnDisabled: {
     opacity: 0.3,
   },
   text: {
     color: colors.WHITE,
-    fontFamily: strings.FONT,
-    fontSize: 20,
+    fontFamily: strings.FONT_BOLD,
+    fontSize: 16,
   },
 });

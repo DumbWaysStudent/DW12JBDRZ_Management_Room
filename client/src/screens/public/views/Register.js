@@ -1,5 +1,11 @@
 import React, {Component} from 'react';
-import {View, Text, SafeAreaView, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  TouchableOpacity,
+  ImageBackground,
+} from 'react-native';
 
 import Button from '../../../components/public/Button';
 import FormTextInput from '../../../components/public/FormTextInput';
@@ -11,6 +17,8 @@ import {API} from '../../../config/api';
 import {storeAuthKey} from '../../../config/auth';
 import styles from '../styles';
 import {isValidEmail, checkSecurePass} from '../../../config/utils';
+
+import background from '../../../assets/images/background.jpg';
 
 export default class Register extends Component {
   emailInputRef = React.createRef();
@@ -118,62 +126,64 @@ export default class Register extends Component {
 
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.formContainer}>
-          <View style={styles.form}>
-            <View style={styles.titleContainer}>
-              <Text style={styles.title}>{strings.WELCOME_TO_REGISTER}</Text>
-              <Text style={styles.title}>{strings.WELCOME_TITLE_APP}</Text>
-            </View>
-            <FormTextInput
-              onChangeText={text => this.handleUnameChange(text)}
-              onSubmitEditing={this.handleUnameSubmitPress}
-              value={this.state.username}
-              placeholder={strings.UNAME_PLACEHOLDER}
-              autoCorrect={false}
-              returnKeyType="next"
-            />
-            <FormTextInput
-              onChangeText={text => this.handleEmailChange(text)}
-              ref={this.emailInputRef}
-              onSubmitEditing={this.handleEmailSubmitPress}
-              value={this.state.email}
-              placeholder={strings.EMAIL_PLACEHOLDER}
-              autoCorrect={false}
-              keyboardType="email-address"
-              returnKeyType="next"
-            />
-            <View style={styles.passContainer}>
+        <ImageBackground source={background} style={styles.background}>
+          <View style={styles.formContainer}>
+            <View style={styles.form}>
+              <View style={styles.titleContainer}>
+                <Text style={styles.title}>{strings.WELCOME_TO_REGISTER}</Text>
+                <Text style={styles.title}>{strings.WELCOME_TITLE_APP}</Text>
+              </View>
               <FormTextInput
-                style={styles.password}
-                ref={this.passwordInputRef}
-                placeholder={strings.PASSWORD_PLACEHOLDER}
-                onChangeText={this.handlePasswordChange}
-                value={this.state.password}
-                secureTextEntry={this.state.securePass}
-                returnKeyType="done"
+                onChangeText={text => this.handleUnameChange(text)}
+                onSubmitEditing={this.handleUnameSubmitPress}
+                value={this.state.username}
+                placeholder={strings.UNAME_PLACEHOLDER}
+                autoCorrect={false}
+                returnKeyType="next"
               />
-              <Icon
-                name={this.state.icEye}
-                size={20}
-                color={colors.SILVER}
-                onPress={this.handleChangePwdType}
+              <FormTextInput
+                onChangeText={text => this.handleEmailChange(text)}
+                ref={this.emailInputRef}
+                onSubmitEditing={this.handleEmailSubmitPress}
+                value={this.state.email}
+                placeholder={strings.EMAIL_PLACEHOLDER}
+                autoCorrect={false}
+                keyboardType="email-address"
+                returnKeyType="next"
+              />
+              <View style={styles.passContainer}>
+                <FormTextInput
+                  style={styles.password}
+                  ref={this.passwordInputRef}
+                  placeholder={strings.PASSWORD_PLACEHOLDER}
+                  onChangeText={this.handlePasswordChange}
+                  value={this.state.password}
+                  secureTextEntry={this.state.securePass}
+                  returnKeyType="done"
+                />
+                <Icon
+                  name={this.state.icEye}
+                  size={20}
+                  color={colors.SILVER}
+                  onPress={this.handleChangePwdType}
+                />
+              </View>
+              <Button
+                label={strings.REGISTER}
+                isLoading={this.state.isLoading}
+                onPress={this.handleRegisterPress}
+                disabled={this.handleDisabledButton(username, email, password)}
               />
             </View>
-            <Button
-              label={strings.REGISTER}
-              isLoading={this.state.isLoading}
-              onPress={this.handleRegisterPress}
-              disabled={this.handleDisabledButton(username, email, password)}
-            />
+            <View style={styles.textContainer}>
+              <Text style={styles.text1}>{strings.LOGIN1}</Text>
+              <TouchableOpacity onPress={this.handleLoginPress}>
+                <Text style={styles.text2}>{strings.LOGIN2}</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.modalContainer}>{this.showModal()}</View>
           </View>
-          <View style={styles.textContainer}>
-            <Text style={styles.text1}>{strings.LOGIN1}</Text>
-            <TouchableOpacity onPress={this.handleLoginPress}>
-              <Text style={styles.text2}>{strings.LOGIN2}</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.modalContainer}>{this.showModal()}</View>
-        </View>
+        </ImageBackground>
       </SafeAreaView>
     );
   }

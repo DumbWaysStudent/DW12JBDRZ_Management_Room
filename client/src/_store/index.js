@@ -1,20 +1,18 @@
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
-import logger from 'redux-logger';
+// import logger from 'redux-logger';
 
-import toons from '../_reducers/toons';
-import favorites from '../_reducers/favorites';
-import episodes from '../_reducers/episodes';
-import pages from '../_reducers/pages';
+import rooms from '../_reducers/rooms';
+import customers from '../_reducers/customers';
+import checkin from '../_reducers/checkin';
 
 // The Global state
 const rootReducer = combineReducers({
-  toons,
-  favorites,
-  episodes,
-  pages,
+  rooms,
+  customers,
+  checkin,
 });
 
-const store = createStore(rootReducer, applyMiddleware(thunk, logger));
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 export default store;

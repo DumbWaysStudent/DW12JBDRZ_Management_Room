@@ -1,14 +1,12 @@
-import {resetAllToons} from '../_actions/toons';
-import {resetFavs} from '../_actions/favorites';
-import {resetEps} from '../_actions/episodes';
-import {resetPages} from '../_actions/pages';
+import {resetRooms} from '../_actions/rooms';
+import {resetCustomers} from '../_actions/customers';
+import {resetCheckin} from '../_actions/checkin';
 
 const reset = () => {
   return dispatch => {
-    dispatch(resetAllToons());
-    dispatch(resetFavs());
-    dispatch(resetEps());
-    dispatch(resetPages());
+    dispatch(resetRooms());
+    dispatch(resetCustomers());
+    dispatch(resetCheckin());
   };
 };
 

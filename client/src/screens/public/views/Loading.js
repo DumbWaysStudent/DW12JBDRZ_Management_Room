@@ -1,7 +1,14 @@
 import React, {Component} from 'react';
-import {View, Image, StyleSheet, SafeAreaView} from 'react-native';
+import {
+  View,
+  Image,
+  StyleSheet,
+  SafeAreaView,
+  ImageBackground,
+} from 'react-native';
 
 import imageLogo from '../../../assets/images/logo.png';
+import background from '../../../assets/images/background.jpg';
 
 import {getAuthKey} from '../../../config/auth';
 
@@ -33,9 +40,9 @@ export default class LoadingScreen extends Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.logoContainer}>
+        <ImageBackground source={background} style={styles.background}>
           <Image source={imageLogo} style={styles.logo} />
-        </View>
+        </ImageBackground>
       </SafeAreaView>
     );
   }
@@ -45,10 +52,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  logoContainer: {
+  background: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
   },
   logo: {
     width: 332,
