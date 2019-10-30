@@ -102,17 +102,18 @@ class Room extends Component {
   };
 
   showRooms = room => {
+    const {id, name} = room;
     const color = this.getColors(room);
 
     return (
       <TouchableOpacity
         style={[styles.roomCont, {backgroundColor: color}]}
         onPress={() => {
-          this.handleChangeRoom(room.name);
-          this.handleRoomEdit(true, room.id);
+          this.handleChangeRoom(name);
+          this.handleRoomEdit(true, id);
           this.toogleModal();
         }}>
-        <Text style={styles.roomName}>{room.name}</Text>
+        <Text style={styles.roomName}>{name}</Text>
       </TouchableOpacity>
     );
   };
@@ -121,6 +122,7 @@ class Room extends Component {
     return (
       <View style={styles.headerCont}>
         <Text style={styles.headerText}>{strings.ROOMCFG}</Text>
+        <View style={styles.headBorder} />
       </View>
     );
   };
@@ -152,7 +154,6 @@ class Room extends Component {
           <Text style={styles.inputLabel}>{strings.RNAME}</Text>
           <TextInput
             style={styles.textInput}
-            placeholder="Room Name"
             onChangeText={text => this.handleChangeRoom(text)}
             value={this.state.roomName}
           />
@@ -229,6 +230,16 @@ const styles = StyleSheet.create({
     fontFamily: strings.FONT_BOLD,
     fontSize: 28,
     color: colors.DARK_BLUE,
+    marginBottom: 10,
+  },
+  headBorder: {
+    borderWidth: 2,
+    borderRadius: 4,
+    borderColor: colors.DARK_BLUE,
+    minWidth: 30,
+    maxWidth: 30,
+    minHeight: 4,
+    maxHeight: 4,
   },
   roomCont: {
     padding: 5,
@@ -260,9 +271,6 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     elevation: 5,
   },
-  formInput: {
-    borderWidth: 1,
-  },
   modalContainer: {
     padding: 20,
     backgroundColor: colors.WHITE,
@@ -277,6 +285,8 @@ const styles = StyleSheet.create({
   },
   textInput: {
     backgroundColor: colors.WHITE,
+    minHeight: 45,
+    maxHeight: 45,
     borderWidth: 1,
     elevation: 4,
     fontFamily: strings.FONT,

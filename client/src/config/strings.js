@@ -46,11 +46,15 @@ const strings = {
   CANCEL: 'Cancel',
   SUBMIT: 'Submit',
   ROOMCFG: 'Room',
+  CUSTOMERCFG: 'Customer',
   CHKINCFG: 'Checkin',
   RNAME: 'Room Name',
   CNAME: 'Customer Name',
   DURATION: 'Duration (minutes)',
   DURATION2: 'Duration Left (minutes)',
+  INPUT_NAME: 'Name',
+  INPUT_ID_NUM: 'ID Number',
+  INPUT_PHONE_NUM: 'Phone Number',
 };
 
 export default strings;

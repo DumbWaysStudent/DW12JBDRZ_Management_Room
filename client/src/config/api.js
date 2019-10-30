@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const API = axios.create({
-  baseURL: 'http://192.168.1.11:3000/api/v2',
+  baseURL: 'https://cohype.herokuapp.com/api/v2',
   timeout: 10000,
 });
 

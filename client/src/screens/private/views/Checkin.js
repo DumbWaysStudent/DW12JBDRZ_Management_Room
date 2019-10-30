@@ -176,6 +176,7 @@ class Checkin extends Component {
     return (
       <View style={styles.headerCont}>
         <Text style={styles.headerText}>{strings.CHKINCFG}</Text>
+        <View style={styles.headBorder} />
       </View>
     );
   };
@@ -332,6 +333,16 @@ const styles = StyleSheet.create({
     fontFamily: strings.FONT_BOLD,
     fontSize: 28,
     color: colors.DARK_BLUE,
+    marginBottom: 10,
+  },
+  headBorder: {
+    borderWidth: 2,
+    borderRadius: 4,
+    borderColor: colors.DARK_BLUE,
+    minWidth: 30,
+    maxWidth: 30,
+    minHeight: 4,
+    maxHeight: 4,
   },
   roomCont: {
     flex: 1,
