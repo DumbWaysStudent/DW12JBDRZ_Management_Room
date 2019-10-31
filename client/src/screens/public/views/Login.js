@@ -112,58 +112,64 @@ export default class Login extends Component {
     this.props.navigation.navigate('Register');
   };
 
-  render() {
+  renderSub = () => {
     const {password} = this.state;
 
     return (
+      <View style={styles.formContainer}>
+        <View style={styles.form}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>{strings.WELCOME_TO_LOGIN}</Text>
+            <Text style={styles.title}>{strings.WELCOME_TITLE_APP}</Text>
+          </View>
+          <FormTextInput
+            onChangeText={text => this.handleUnameChange(text)}
+            onSubmitEditing={this.handleUnameSubmitPress}
+            value={this.state.username}
+            placeholder={strings.UNAME_PLACEHOLDER}
+            autoCorrect={false}
+            returnKeyType="next"
+          />
+          <View style={styles.passContainer}>
+            <FormTextInput
+              style={styles.password}
+              ref={this.passwordInputRef}
+              placeholder={strings.PASSWORD_PLACEHOLDER}
+              onChangeText={this.handlePasswordChange}
+              value={this.state.password}
+              secureTextEntry={this.state.securePass}
+              returnKeyType="done"
+            />
+            <Icon
+              name={this.state.icEye}
+              size={20}
+              color={colors.SILVER}
+              onPress={this.handleChangePwdType}
+            />
+          </View>
+          <Button
+            label={strings.LOGIN}
+            isLoading={this.state.isLoading}
+            onPress={this.handleLoginPress}
+            disabled={this.handleDisabledButton(password)}
+          />
+          <View style={styles.textContainer}>
+            <Text style={styles.text1}>{strings.SIGNUP1}</Text>
+            <TouchableOpacity onPress={this.handleSignupPress}>
+              <Text style={styles.text2}>{strings.SIGNUP2}</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.modalContainer}>{this.showModal()}</View>
+      </View>
+    );
+  };
+
+  render() {
+    return (
       <SafeAreaView style={styles.container}>
         <ImageBackground source={background} style={styles.background}>
-          <View style={styles.formContainer}>
-            <View style={styles.form}>
-              <View style={styles.titleContainer}>
-                <Text style={styles.title}>{strings.WELCOME_TO_LOGIN}</Text>
-                <Text style={styles.title}>{strings.WELCOME_TITLE_APP}</Text>
-              </View>
-              <FormTextInput
-                onChangeText={text => this.handleUnameChange(text)}
-                onSubmitEditing={this.handleUnameSubmitPress}
-                value={this.state.username}
-                placeholder={strings.UNAME_PLACEHOLDER}
-                autoCorrect={false}
-                returnKeyType="next"
-              />
-              <View style={styles.passContainer}>
-                <FormTextInput
-                  style={styles.password}
-                  ref={this.passwordInputRef}
-                  placeholder={strings.PASSWORD_PLACEHOLDER}
-                  onChangeText={this.handlePasswordChange}
-                  value={this.state.password}
-                  secureTextEntry={this.state.securePass}
-                  returnKeyType="done"
-                />
-                <Icon
-                  name={this.state.icEye}
-                  size={20}
-                  color={colors.SILVER}
-                  onPress={this.handleChangePwdType}
-                />
-              </View>
-              <Button
-                label={strings.LOGIN}
-                isLoading={this.state.isLoading}
-                onPress={this.handleLoginPress}
-                disabled={this.handleDisabledButton(password)}
-              />
-              <View style={styles.textContainer}>
-                <Text style={styles.text1}>{strings.SIGNUP1}</Text>
-                <TouchableOpacity onPress={this.handleSignupPress}>
-                  <Text style={styles.text2}>{strings.SIGNUP2}</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-            <View style={styles.modalContainer}>{this.showModal()}</View>
-          </View>
+          {this.renderSub()}
         </ImageBackground>
       </SafeAreaView>
     );

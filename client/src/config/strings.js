@@ -8,12 +8,15 @@ const strings = {
   LOGOUT: 'Log Out',
   WELCOME_TO_LOGIN: 'Login',
   WELCOME_TO_REGISTER: 'Register',
-  WELCOME_TITLE_APP: 'Co HyPe',
+  WELCOME_TITLE_APP: 'coHyPe',
+  LOADING_TITLE: 'coHyPe',
+  LOADING_DESC: 'The future is here ..',
   UNAME_PLACEHOLDER: 'Username',
   EMAIL_PLACEHOLDER: 'Email',
   PASSWORD_PLACEHOLDER: 'Password',
   TRYAGAIN: 'Try Again',
   MODALMSG: 'Sorry, something went wrong.',
+  FONT_LOADING: 'Sriracha-Regular',
   FONT: 'JosefinSans-Regular',
   FONT_BOLD: 'JosefinSans-Bold',
   FAVORITES: 'Favorites',
@@ -55,6 +58,16 @@ const strings = {
   INPUT_NAME: 'Name',
   INPUT_ID_NUM: 'ID Number',
   INPUT_PHONE_NUM: 'Phone Number',
+  DONE: 'DONE',
+  SKIP: 'SKIP',
+  INTRO_TITLE1: 'Growing space',
+  INTRO_TITLE2: 'Awesome feature',
+  INTRO_TITLE3: 'User friendly',
+  INTRO_DESC1:
+    'coHyPe is a growing co-working space management application that will make the life easier.',
+  INTRO_DESC2: 'Contain easy but awesome features that will blow your mind.',
+  INTRO_DESC3: 'Designed with power of colors, and UI friendly.',
+  EMPTY_DATA: "It's empty! Let's create one.",
 };
 
 export default strings;

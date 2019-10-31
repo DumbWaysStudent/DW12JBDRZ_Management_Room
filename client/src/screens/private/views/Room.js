@@ -22,8 +22,10 @@ import {METHOD_GET, METHOD_POST, METHOD_PUT} from '../../../config/constants';
 import {setHeaderAuth} from '../../../config/api';
 import {getAuthKey} from '../../../config/auth';
 import fetchRooms from '../../../_store/rooms';
+import fetchCheckin from '../../../_store/checkin';
 import Error from '../../../components/error';
 import Loading from '../../../components/loading';
+import Empty from '../../../components/empty';
 
 import background from '../../../assets/images/background.jpg';
 
@@ -65,6 +67,7 @@ class Room extends Component {
       const user = await getAuthKey();
       this.toogleModal();
       this.props.fetchRooms(METHOD_POST, user.id, roomName);
+      this.props.fetchCheckin(METHOD_GET, user.id);
     } catch (error) {
       console.log(error);
     }
@@ -94,7 +97,7 @@ class Room extends Component {
     );
   };
 
-  getColors = room => {
+  getColor = room => {
     const {AZURE, CYELLOW, SORENGE, CRED, VIOLET, VGREEN} = colors;
     const color = [AZURE, CYELLOW, SORENGE, CRED, VIOLET, VGREEN];
 
@@ -103,7 +106,7 @@ class Room extends Component {
 
   showRooms = room => {
     const {id, name} = room;
-    const color = this.getColors(room);
+    const color = this.getColor(room);
 
     return (
       <TouchableOpacity
@@ -175,6 +178,16 @@ class Room extends Component {
     );
   };
 
+  renderEmptyData = () => {
+    return (
+      <View style={styles.headerCont}>
+        <Text style={styles.headerText}>{strings.ROOMCFG}</Text>
+        <View style={styles.headBorder} />
+        <Empty />
+      </View>
+    );
+  };
+
   render() {
     const {rooms} = this.props;
 
@@ -187,7 +200,9 @@ class Room extends Component {
     return (
       <SafeAreaView style={styles.container}>
         <ImageBackground source={background} style={styles.background}>
-          {this.renderSub(rooms.data)}
+          {rooms.data.length > 0
+            ? this.renderSub(rooms.data)
+            : this.renderEmptyData()}
           {this.renderFloatBtn()}
           {this.showModal()}
         </ImageBackground>
@@ -204,6 +219,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   fetchRooms,
+  fetchCheckin,
 };
 
 export default connect(

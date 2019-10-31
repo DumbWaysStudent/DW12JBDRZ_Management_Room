@@ -28,6 +28,7 @@ import fetchCustomers from '../../../_store/customers';
 import fetchCheckin from '../../../_store/checkin';
 import Error from '../../../components/error';
 import Loading from '../../../components/loading';
+import Empty from '../../../components/empty';
 
 import background from '../../../assets/images/background.jpg';
 
@@ -39,7 +40,6 @@ class Checkin extends Component {
       customer_id: null,
       order_id: null,
       roomName: null,
-      customerName: null,
       duration: null,
       isCheckout: false,
       modalVisible: false,
@@ -92,7 +92,6 @@ class Checkin extends Component {
       customer_id: null,
       order_id: null,
       roomName: null,
-      customerName: null,
       duration: null,
       isCheckout: false,
     });
@@ -276,6 +275,16 @@ class Checkin extends Component {
     );
   };
 
+  renderEmptyData = () => {
+    return (
+      <View style={styles.headerCont}>
+        <Text style={styles.headerText}>{strings.CHKINCFG}</Text>
+        <View style={styles.headBorder} />
+        <Empty />
+      </View>
+    );
+  };
+
   render() {
     const {checkin} = this.props;
 
@@ -288,7 +297,9 @@ class Checkin extends Component {
     return (
       <SafeAreaView style={styles.container}>
         <ImageBackground source={background} style={styles.background}>
-          {this.renderSub(checkin.data)}
+          {checkin.data.length > 0
+            ? this.renderSub(checkin.data)
+            : this.renderEmptyData()}
           {this.showModal()}
         </ImageBackground>
       </SafeAreaView>
@@ -366,7 +377,7 @@ const styles = StyleSheet.create({
   roomName: {
     fontFamily: strings.FONT_BOLD,
     fontSize: 12,
-    color: colors.DARK_GREY,
+    color: colors.WHITE,
   },
   formInput: {
     borderWidth: 1,
@@ -375,7 +386,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.GREEN,
   },
   roomUnAvail: {
-    backgroundColor: colors.SILVER,
+    backgroundColor: colors.DARK_SILVER,
   },
   modalContainer: {
     padding: 20,

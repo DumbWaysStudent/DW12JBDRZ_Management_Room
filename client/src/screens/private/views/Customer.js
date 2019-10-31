@@ -25,6 +25,7 @@ import {getAuthKey} from '../../../config/auth';
 import fetchCustomers from '../../../_store/customers';
 import Error from '../../../components/error';
 import Loading from '../../../components/loading';
+import Empty from '../../../components/empty';
 
 import background from '../../../assets/images/background.jpg';
 import ava1 from '../../../assets/images/avatar1.png';
@@ -122,8 +123,16 @@ class Customer extends Component {
     return avatar[(customer.id - 1) % avatar.length];
   };
 
+  getColor = customer => {
+    const {MAUVE, BGUM, CALAMANSI, MENTHOL, NPBLUE, MBPURPLE} = colors;
+    const color = [MAUVE, BGUM, CALAMANSI, MENTHOL, NPBLUE, MBPURPLE];
+
+    return color[(customer.id - 1) % color.length];
+  };
+
   showCustomers = customer => {
     const {id, name, identity_number, phone_number} = customer;
+    const color = this.getColor(customer);
 
     return (
       <TouchableOpacity
@@ -134,7 +143,7 @@ class Customer extends Component {
           this.handleCustomerEdit(true, id);
           this.toogleModal();
         }}>
-        <View style={styles.customerCont}>
+        <View style={[styles.customerCont, {backgroundColor: color}]}>
           <View style={styles.cDataCont}>
             <Text style={styles.cName}>{name}</Text>
             <Text style={styles.cIdNum}>{identity_number}</Text>
@@ -228,6 +237,16 @@ class Customer extends Component {
     );
   };
 
+  renderEmptyData = () => {
+    return (
+      <View style={styles.headerCont}>
+        <Text style={styles.headerText}>{strings.CUSTOMERCFG}</Text>
+        <View style={styles.headBorder} />
+        <Empty />
+      </View>
+    );
+  };
+
   render() {
     const {customers} = this.props;
 
@@ -242,7 +261,9 @@ class Customer extends Component {
     return (
       <SafeAreaView style={styles.container}>
         <ImageBackground source={background} style={styles.background}>
-          {this.renderSub(customers.data)}
+          {customers.data.length > 0
+            ? this.renderSub(customers.data)
+            : this.renderEmptyData()}
           {this.renderFloatBtn()}
           {this.showModal()}
         </ImageBackground>
@@ -304,7 +325,6 @@ const styles = StyleSheet.create({
     minWidth: 310,
     maxWidth: 310,
     borderRadius: 8,
-    backgroundColor: colors.WHITE,
     elevation: 5,
   },
   cName: {
@@ -320,8 +340,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   floatBtn: {
-    borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.2)',
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
@@ -331,6 +349,7 @@ const styles = StyleSheet.create({
     right: 20,
     backgroundColor: colors.DARK_GREEN,
     borderRadius: 100,
+    elevation: 5,
   },
   modalContainer: {
     padding: 20,

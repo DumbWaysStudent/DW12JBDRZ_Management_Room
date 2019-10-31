@@ -1,7 +1,7 @@
 const colors = {
   BLACK: '#000',
   WHITE: '#FFF',
-  GREEN: '#00D564',
+  GREEN: '#00B22A',
   BLUE: '#003EFF',
   DARK_BLUE: '#000046',
   LIGHT_BLUE: '#D9F1FD',
@@ -9,6 +9,7 @@ const colors = {
   DARK_GREEN: '#008B00',
   DODGER_BLUE: '#428AF8',
   SILVER: '#BEBEBE',
+  DARK_SILVER: '#919191',
   TORCH_RED: '#F8262F',
   MISCHKA: '#E5E4E6',
   BROWN: '#CECEAA',
@@ -19,6 +20,12 @@ const colors = {
   CRED: '#FF0033',
   VIOLET: '#9911AA',
   VGREEN: '#336600',
+  MAUVE: '#DBB5F7',
+  BGUM: '#F8C2CE',
+  CALAMANSI: '#FDF4AB',
+  MENTHOL: '#C2F39F',
+  NPBLUE: '#98DEF3',
+  MBPURPLE: '#AAB3F3',
 };
 
 export default colors;

@@ -7,7 +7,7 @@ import {
   ImageBackground,
 } from 'react-native';
 
-import loadImg from '../assets/images/worklogo.png';
+import loadImg from '../assets/images/loading.png';
 import background from '../assets/images/background.jpg';
 
 import strings from '../config/strings';
@@ -37,13 +37,12 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   loading: {
-    width: 150,
-    height: 150,
+    width: 300,
+    height: 200,
     resizeMode: 'contain',
-    marginBottom: 10,
   },
   loadingTxt: {
     fontFamily: strings.FONT,
-    fontSize: 22,
+    fontSize: 20,
   },
 });

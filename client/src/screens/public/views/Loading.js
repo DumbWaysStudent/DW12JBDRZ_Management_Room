@@ -1,16 +1,11 @@
 import React, {Component} from 'react';
-import {
-  View,
-  Image,
-  StyleSheet,
-  SafeAreaView,
-  ImageBackground,
-} from 'react-native';
+import {Text, StyleSheet, SafeAreaView, ImageBackground} from 'react-native';
 
-import imageLogo from '../../../assets/images/logo.png';
 import background from '../../../assets/images/background.jpg';
 
 import {getAuthKey} from '../../../config/auth';
+
+import strings from '../../../config/strings';
 
 export default class LoadingScreen extends Component {
   constructor(props) {
@@ -21,7 +16,7 @@ export default class LoadingScreen extends Component {
   componentDidMount() {
     this._interval = setInterval(() => {
       this.checkAuthorized();
-    }, 1000);
+    }, 2000);
   }
 
   componentWillUnmount() {
@@ -41,7 +36,8 @@ export default class LoadingScreen extends Component {
     return (
       <SafeAreaView style={styles.container}>
         <ImageBackground source={background} style={styles.background}>
-          <Image source={imageLogo} style={styles.logo} />
+          <Text style={styles.logoTitle}>{strings.LOADING_TITLE}</Text>
+          <Text style={styles.logoText}>{strings.LOADING_DESC}</Text>
         </ImageBackground>
       </SafeAreaView>
     );
@@ -59,9 +55,12 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  logo: {
-    width: 332,
-    height: 89,
-    resizeMode: 'contain',
+  logoTitle: {
+    fontFamily: strings.FONT_LOADING,
+    fontSize: 50,
+  },
+  logoText: {
+    fontFamily: strings.FONT_LOADING,
+    fontSize: 15,
   },
 });
