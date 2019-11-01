@@ -23,8 +23,6 @@ import {METHOD_GET, METHOD_POST, METHOD_PUT} from '../../../config/constants';
 import {setHeaderAuth} from '../../../config/api';
 import {getAuthKey} from '../../../config/auth';
 import {getTimeDiffMin, getTimeDiffSec} from '../../../config/utils';
-import fetchRooms from '../../../_store/rooms';
-import fetchCustomers from '../../../_store/customers';
 import fetchCheckin from '../../../_store/checkin';
 import Error from '../../../components/error';
 import Loading from '../../../components/loading';
@@ -58,8 +56,6 @@ class Checkin extends Component {
     try {
       const user = await getAuthKey();
       setHeaderAuth(user.token);
-      this.props.fetchRooms(METHOD_GET, user.id);
-      this.props.fetchCustomers(METHOD_GET, user.id);
       this.props.fetchCheckin(METHOD_GET, user.id);
     } catch (error) {
       console.log(error);
@@ -69,17 +65,15 @@ class Checkin extends Component {
   handleAddCheckin = async orderData => {
     try {
       const user = await getAuthKey();
-      this.toogleModal();
       this.props.fetchCheckin(METHOD_POST, user.id, orderData);
     } catch (error) {
       console.log(error);
     }
   };
 
-  handleAddCheckout = async (order_id, auto) => {
+  handleAddCheckout = async order_id => {
     try {
       const user = await getAuthKey();
-      if (!auto) this.toogleModal();
       this.props.fetchCheckin(METHOD_PUT, user.id, null, order_id);
     } catch (error) {
       console.log(error);
@@ -110,7 +104,7 @@ class Checkin extends Component {
           <CountDown
             until={duration}
             size={8}
-            onFinish={() => this.handleAddCheckout(order.id, true)}
+            onFinish={() => this.handleAddCheckout(order.id)}
             digitStyle={{
               backgroundColor: colors.WHITE,
             }}
@@ -251,20 +245,20 @@ class Checkin extends Component {
             <TouchableOpacity
               onPress={() => {
                 const {room_id, customer_id, order_id, duration} = this.state;
-
-                if (!duration || isNaN(duration)) {
-                  alert('Invalid duration.');
-                  return;
-                }
-
                 const data = {
                   room_id,
                   customer_id,
                   duration,
                 };
 
+                if (!duration || isNaN(duration)) {
+                  alert('Invalid duration.');
+                  return;
+                }
+
+                this.toogleModal();
                 this.state.isCheckout
-                  ? this.handleAddCheckout(order_id, false)
+                  ? this.handleAddCheckout(order_id)
                   : this.handleAddCheckin(data);
               }}>
               <Text style={styles.btnSubmit}>{strings.SUBMIT}</Text>
@@ -315,8 +309,6 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  fetchRooms,
-  fetchCustomers,
   fetchCheckin,
 };
 

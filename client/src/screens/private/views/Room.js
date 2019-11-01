@@ -22,7 +22,6 @@ import {METHOD_GET, METHOD_POST, METHOD_PUT} from '../../../config/constants';
 import {setHeaderAuth} from '../../../config/api';
 import {getAuthKey} from '../../../config/auth';
 import fetchRooms from '../../../_store/rooms';
-import fetchCheckin from '../../../_store/checkin';
 import Error from '../../../components/error';
 import Loading from '../../../components/loading';
 import Empty from '../../../components/empty';
@@ -65,9 +64,7 @@ class Room extends Component {
   handleAddRoom = async roomName => {
     try {
       const user = await getAuthKey();
-      this.toogleModal();
       this.props.fetchRooms(METHOD_POST, user.id, roomName);
-      this.props.fetchCheckin(METHOD_GET, user.id);
     } catch (error) {
       console.log(error);
     }
@@ -76,7 +73,6 @@ class Room extends Component {
   handleEditRoom = async (roomName, roomId) => {
     try {
       const user = await getAuthKey();
-      this.toogleModal();
       this.props.fetchRooms(METHOD_PUT, user.id, roomName, roomId);
     } catch (error) {
       console.log(error);
@@ -165,11 +161,12 @@ class Room extends Component {
               <Text style={styles.btnCancel}>{strings.CANCEL}</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() =>
+              onPress={() => {
+                this.toogleModal();
                 this.state.isEdit
                   ? this.handleEditRoom(this.state.roomName, this.state.roomId)
-                  : this.handleAddRoom(this.state.roomName)
-              }>
+                  : this.handleAddRoom(this.state.roomName);
+              }}>
               <Text style={styles.btnSubmit}>{strings.SUBMIT}</Text>
             </TouchableOpacity>
           </View>
@@ -219,7 +216,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   fetchRooms,
-  fetchCheckin,
 };
 
 export default connect(

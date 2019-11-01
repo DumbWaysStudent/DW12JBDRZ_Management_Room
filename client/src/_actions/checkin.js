@@ -14,7 +14,7 @@ import {
   RESET_CHECKIN,
 } from '../config/constants';
 
-export const fetchData = (method, bool) => {
+export const checkinFetch = (method, bool) => {
   let actionType;
 
   switch (method) {
@@ -38,7 +38,7 @@ export const fetchData = (method, bool) => {
   };
 };
 
-export const fetchDataFulfilled = (method, data) => {
+export const checkinFetchDone = (method, data) => {
   let actionType;
 
   switch (method) {
@@ -60,7 +60,7 @@ export const fetchDataFulfilled = (method, data) => {
   };
 };
 
-export const fetchDataRejected = (method, error) => {
+export const checkinFetchFail = (method, error) => {
   let actionType;
 
   switch (method) {
@@ -82,7 +82,7 @@ export const fetchDataRejected = (method, error) => {
   };
 };
 
-export const resetCheckin = () => {
+export const checkinReset = () => {
   return {
     type: RESET_CHECKIN,
   };

@@ -102,7 +102,11 @@ export default class Register extends Component {
             this.toggleModal(data.message);
           }
         } else {
-          this.toggleModal(error.message);
+          if (error.code == 'ECONNABORTED') {
+            this.toggleModal(strings.TIMEOUT);
+          } else {
+            this.toggleModal(error.message);
+          }
         }
       });
   };

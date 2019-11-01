@@ -14,7 +14,7 @@ import {
   RESET_ROOMS,
 } from '../config/constants';
 
-export const fetchData = (method, bool) => {
+export const roomFetch = (method, bool) => {
   let actionType;
 
   switch (method) {
@@ -38,7 +38,7 @@ export const fetchData = (method, bool) => {
   };
 };
 
-export const fetchDataFulfilled = (method, data) => {
+export const roomFetchDone = (method, data) => {
   let actionType;
 
   switch (method) {
@@ -60,7 +60,7 @@ export const fetchDataFulfilled = (method, data) => {
   };
 };
 
-export const fetchDataRejected = (method, error) => {
+export const roomFetchFail = (method, error) => {
   let actionType;
 
   switch (method) {
@@ -82,7 +82,7 @@ export const fetchDataRejected = (method, error) => {
   };
 };
 
-export const resetRooms = () => {
+export const roomReset = () => {
   return {
     type: RESET_ROOMS,
   };

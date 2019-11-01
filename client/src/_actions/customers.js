@@ -14,7 +14,7 @@ import {
   RESET_CUSTOMERS,
 } from '../config/constants';
 
-export const fetchData = (method, bool) => {
+export const customerFetch = (method, bool) => {
   let actionType;
 
   switch (method) {
@@ -39,7 +39,7 @@ export const fetchData = (method, bool) => {
   };
 };
 
-export const fetchDataFulfilled = (method, data) => {
+export const customerFetchDone = (method, data) => {
   let actionType;
 
   switch (method) {
@@ -61,7 +61,7 @@ export const fetchDataFulfilled = (method, data) => {
   };
 };
 
-export const fetchDataRejected = (method, error) => {
+export const customerFetchFail = (method, error) => {
   let actionType;
 
   switch (method) {
@@ -83,7 +83,7 @@ export const fetchDataRejected = (method, error) => {
   };
 };
 
-export const resetCustomers = () => {
+export const customerReset = () => {
   return {
     type: RESET_CUSTOMERS,
   };

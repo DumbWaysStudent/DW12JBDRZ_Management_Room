@@ -1,12 +1,12 @@
-import {resetRooms} from '../_actions/rooms';
-import {resetCustomers} from '../_actions/customers';
-import {resetCheckin} from '../_actions/checkin';
+import {roomReset} from '../_actions/rooms';
+import {customerReset} from '../_actions/customers';
+import {checkinReset} from '../_actions/checkin';
 
 const reset = () => {
   return dispatch => {
-    dispatch(resetRooms());
-    dispatch(resetCustomers());
-    dispatch(resetCheckin());
+    dispatch(roomReset());
+    dispatch(customerReset());
+    dispatch(checkinReset());
   };
 };
 
