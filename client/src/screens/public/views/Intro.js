@@ -10,6 +10,7 @@ import AppIntroSlider from 'react-native-app-intro-slider';
 
 import colors from '../../../config/colors';
 import strings from '../../../config/strings';
+import {storeIntroKey} from '../../../config/auth';
 
 import background from '../../../assets/images/background.jpg';
 
@@ -54,12 +55,22 @@ export default class Intro extends Component {
     );
   };
 
-  _onSkip = () => {
-    this.props.navigation.navigate('Login');
+  _onSkip = async () => {
+    try {
+      await storeIntroKey();
+      this.props.navigation.navigate('Auth');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  _onDone = () => {
-    this.props.navigation.navigate('Register');
+  _onDone = async () => {
+    try {
+      await storeIntroKey();
+      this.props.navigation.navigate('Auth');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   render() {

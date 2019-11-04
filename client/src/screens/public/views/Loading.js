@@ -3,7 +3,7 @@ import {Text, StyleSheet, SafeAreaView, ImageBackground} from 'react-native';
 
 import background from '../../../assets/images/background.jpg';
 
-import {getAuthKey} from '../../../config/auth';
+import {getAuthKey, getIntroKey} from '../../../config/auth';
 
 import strings from '../../../config/strings';
 
@@ -25,8 +25,11 @@ export default class LoadingScreen extends Component {
 
   checkAuthorized = async () => {
     try {
-      const hasKey = await getAuthKey();
-      this.props.navigation.navigate(hasKey ? 'App' : 'Auth');
+      const hasAuthKey = await getAuthKey();
+      const hasIntroKey = await getIntroKey();
+      this.props.navigation.navigate(
+        hasAuthKey ? 'App' : hasIntroKey ? 'Auth' : 'Intro',
+      );
     } catch (error) {
       console.log(error);
     }

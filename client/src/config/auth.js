@@ -24,3 +24,20 @@ export const getAuthKey = async () => {
     console.log(error);
   }
 };
+
+export const storeIntroKey = async () => {
+  try {
+    await AsyncStorage.setItem('intro', 'keystored');
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getIntroKey = async () => {
+  try {
+    const intro = await AsyncStorage.getItem('intro');
+    return intro;
+  } catch (error) {
+    console.log(error);
+  }
+};
