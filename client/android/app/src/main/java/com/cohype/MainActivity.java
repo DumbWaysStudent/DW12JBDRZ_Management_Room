@@ -1,4 +1,4 @@
-package com.dw12jbdrz_management_room;
+package com.cohype;
 
 import com.facebook.react.ReactActivity;
 
@@ -10,6 +10,6 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "DW12JBDRZ_Management_Room";
+    return "CoHyPe";
   }
 }

@@ -128,7 +128,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.dw12jbdrz_management_room"
+        applicationId "com.cohype"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

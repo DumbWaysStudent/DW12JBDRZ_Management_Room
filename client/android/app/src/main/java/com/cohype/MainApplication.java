@@ -1,4 +1,4 @@
-package com.dw12jbdrz_management_room;
+package com.cohype;
 
 import android.app.Application;
 import android.content.Context;
