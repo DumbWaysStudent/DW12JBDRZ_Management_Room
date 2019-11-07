@@ -1,7 +1,8 @@
 import axios from 'axios';
+import {BASE_URL} from 'react-native-dotenv';
 
 export const API = axios.create({
-  baseURL: 'https://cohype.herokuapp.com/api/v2',
+  baseURL: BASE_URL,
   timeout: 10000,
 });
 
