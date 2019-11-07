@@ -1,5 +1,11 @@
 import React, {Component} from 'react';
-import {Text, StyleSheet, SafeAreaView, ImageBackground} from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  ImageBackground,
+  StatusBar,
+} from 'react-native';
 
 import background from '../../../assets/images/background.jpg';
 
@@ -14,6 +20,9 @@ export default class LoadingScreen extends Component {
   }
 
   componentDidMount() {
+    StatusBar.setBarStyle('dark-content', true);
+    StatusBar.setBackgroundColor('transparent');
+    StatusBar.setTranslucent(true);
     this._interval = setInterval(() => {
       this.checkAuthorized();
     }, 2000);

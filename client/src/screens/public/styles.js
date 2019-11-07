@@ -25,7 +25,6 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: strings.FONT_BOLD,
     fontSize: 40,
-    color: colors.DARK_GREY,
   },
   passContainer: {
     flexDirection: 'row',

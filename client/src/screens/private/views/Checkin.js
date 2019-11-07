@@ -133,7 +133,12 @@ class Checkin extends Component {
       <TouchableOpacity
         onPress={() => {
           const {customer, order} = room;
-          const customer_id = customer ? customer.id : null;
+          const {customers} = this.props;
+          const customer_id = customer
+            ? customer.id
+            : customers.data.length > 0
+            ? customers.data[0].id
+            : null;
           const order_id = order ? order.id : null;
           const isCheckout = order && order.is_booked ? true : false;
           let duration = null;
@@ -191,31 +196,38 @@ class Checkin extends Component {
 
   showModal = () => {
     const {customers} = this.props;
+    const {
+      room_id,
+      customer_id,
+      order_id,
+      roomName,
+      duration,
+      isCheckout,
+      modalVisible,
+    } = this.state;
 
     return (
-      <Modal isVisible={this.state.modalVisible}>
+      <Modal isVisible={modalVisible}>
         <View style={styles.modalContainer}>
           <View style={styles.modalTitleContainer}>
             <Text style={styles.inputTitle}>
-              {this.state.isCheckout ? 'Checkout' : 'Checkin'}
+              {isCheckout ? 'Checkout' : 'Checkin'}
             </Text>
           </View>
           <Text style={styles.inputLabel}>{strings.RNAME}</Text>
           <TextInput
             style={styles.textInput}
-            value={this.state.roomName}
+            value={roomName}
             editable={false}
           />
           <Text style={styles.inputLabel}>{strings.CNAME}</Text>
           <Picker
             mode="dropdown"
-            selectedValue={
-              this.state.customer_id ? this.state.customer_id : null
-            }
+            selectedValue={customer_id}
             onValueChange={itemValue => {
               this.setState({customer_id: itemValue});
             }}
-            enabled={this.state.isCheckout ? false : true}>
+            enabled={isCheckout ? false : true}>
             {customers.data.map(customer => {
               return (
                 <Picker.Item
@@ -227,16 +239,14 @@ class Checkin extends Component {
             })}
           </Picker>
           <Text style={styles.inputLabel}>
-            {this.state.isCheckout ? strings.DURATION2 : strings.DURATION}
+            {isCheckout ? strings.DURATION2 : strings.DURATION}
           </Text>
           <TextInput
             style={styles.textInput}
             keyboardType="numeric"
             onChangeText={duration => this.setState({duration})}
-            value={
-              this.state.isCheckout ? this.state.duration.toString() : null
-            }
-            editable={this.state.isCheckout ? false : true}
+            value={isCheckout ? duration.toString() : null}
+            editable={isCheckout ? false : true}
           />
           <View style={styles.btnInputCont}>
             <TouchableOpacity onPress={() => this.toogleModal()}>
@@ -244,20 +254,23 @@ class Checkin extends Component {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                const {room_id, customer_id, order_id, duration} = this.state;
                 const data = {
                   room_id,
                   customer_id,
                   duration,
                 };
 
-                if (!duration || isNaN(duration)) {
-                  alert('Invalid duration.');
+                if (
+                  !customer_id ||
+                  !parseInt(duration) ||
+                  isNaN(parseInt(duration))
+                ) {
+                  alert('Invalid data input.');
                   return;
                 }
 
                 this.toogleModal();
-                this.state.isCheckout
+                isCheckout
                   ? this.handleAddCheckout(order_id)
                   : this.handleAddCheckin(data);
               }}>
